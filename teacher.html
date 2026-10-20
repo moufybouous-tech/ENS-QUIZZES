@@ -58,10 +58,10 @@ select{padding:8px;border-radius:6px;border:1px solid var(--line);background:var
 <script>window.API_URL = "https://script.google.com/macros/s/AKfycbwEniTg83Uh0wGqlBMz1hBx2N2snCoETxQx26KtiJhSrne0AmZDYDBubeXaw6L5D1KWeg/exec";</script><script>
 const $=id=>document.getElementById(id);let pin=sessionStorage.getItem("pin")||"",data=[],skew=0,filled=false;
 const fmt=s=>Math.floor(s/3600)+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-function t(cmd,x){const u=new URL(window.API_URL),p=Object.assign({action:"t",pin,cmd,q:$("qsel").value},x||{});for(const k in p)u.searchParams.set(k,p[k]);return fetch(u).then(r=>r.json());}
+function t(cmd,x){const u=new URL(window.API_URL),p=Object.assign({action:"t",pin,cmd,q:$("qsel").value},x||{});for(const k in p)u.searchParams.set(k,p[k]);return fetch(u).then(r=>r.text()).then(x=>{try{return JSON.parse(x);}catch(e){throw new Error("Unexpected answer: "+x.replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim().slice(0,200));}});}
 function refresh(){t("list").then(r=>{if(!r.ok){pin="";sessionStorage.removeItem("pin");$("login").classList.remove("hide");$("panel").classList.add("hide");$("lerr").textContent=r.error;return;}
  $("login").classList.add("hide");$("panel").classList.remove("hide");data=r.quizzes;skew=r.now-Date.now();
- if(!filled){$("qsel").innerHTML=data.map(d=>`<option value="${d.q}">${d.title}</option>`).join("");filled=true;}draw();}).catch(()=>{$("lerr").textContent="Cannot reach the server.";});}
+ if(!filled){$("qsel").innerHTML=data.map(d=>`<option value="${d.q}">${d.title}</option>`).join("");filled=true;}draw();}).catch(e=>{$("lerr").textContent="Cannot reach the server. Detail: "+e.message;});}
 function draw(){const d=data.find(x=>x.q===$("qsel").value);if(!d)return;
  $("state").textContent={closed:"Closed",lobby:"Open, waiting to start",running:"Running",ended:"Ended"}[d.state];$("pw").textContent=d.pwd||"-";
  $("link").textContent=location.href.replace(/teacher\.html.*$/,"")+"quiz.html?q="+d.q;
