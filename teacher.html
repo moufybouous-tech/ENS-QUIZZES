@@ -1,215 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Culture Studies 1 — Teacher Panel</title>
-<style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teacher control panel</title><style>
 :root{--lapis:#16324F;--clay:#A8452F;--gold:#C9973A;--paper:#FBF8F3;--ink:#242220;--card:#FFFFFF;--line:#E3DACB;--muted:#6b6258;}
 @media(prefers-color-scheme:dark){:root{--paper:#161311;--ink:#EDE7DD;--card:#211D19;--line:#3A342C;--muted:#a79d8e;}}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,Segoe UI,Roboto,system-ui,sans-serif;}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:26px;margin:0 0 6px;color:var(--lapis);}
-@media(prefers-color-scheme:dark){h1{color:var(--gold);}}
-.wrap{max-width:720px;margin:0 auto;padding:22px 18px 70px;}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin:14px 0;}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:27px;margin:0 0 6px;color:var(--lapis);}
+h2{font-family:Georgia,serif;font-size:18px;margin:22px 0 4px;color:var(--lapis);}
+@media(prefers-color-scheme:dark){h1,h2{color:var(--gold);}}
+.wrap{max-width:700px;margin:0 auto;padding:22px 18px 70px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin:14px 0;}
 .brand{font-family:Georgia,serif;font-size:13px;letter-spacing:.03em;color:var(--gold);margin:0 0 6px;}
-.sub{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 14px;}
-label{display:block;font-size:13px;font-weight:600;margin:10px 0 4px;}
-input[type=text],input[type=password],input[type=number]{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:15px;}
-.btn{appearance:none;border:none;border-radius:8px;padding:11px 18px;font-size:14.5px;font-weight:600;cursor:pointer;background:var(--clay);color:#fff;margin-top:12px;}
+.sub{color:var(--muted);font-size:14px;line-height:1.5;margin:0 0 16px;}
+label{display:block;font-size:13.5px;font-weight:600;margin:12px 0 5px;}
+input[type=text],input[type=password]{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:15px;}
+.btn{appearance:none;border:none;border-radius:8px;padding:12px 20px;font-size:15px;font-weight:600;cursor:pointer;background:var(--clay);color:#fff;margin:14px 10px 0 0;}
 .btn:hover{filter:brightness(1.08);}
+.btn.secondary{background:transparent;border:1px solid var(--line);color:var(--ink);}
 .btn:disabled{opacity:.5;cursor:not-allowed;}
+.err{color:var(--clay);font-size:13.5px;margin-top:8px;min-height:1em;}
 .hide{display:none!important;}
-.lecrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-.lecname{font-family:Georgia,serif;font-size:18px;color:var(--lapis);font-weight:700;}
-@media(prefers-color-scheme:dark){.lecname{color:var(--gold);}}
-.controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:10px;}
-.toggle{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;}
-.durfield{display:flex;align-items:center;gap:6px;font-size:14px;}
-.durfield input{width:80px;}
-.status{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:1.2em;}
-.status.ok{color:#2a7a3c;}
-.status.err{color:var(--clay);}
-</style>
-</head>
-<body>
-<div class="wrap">
+.timerbar{position:sticky;top:0;z-index:5;background:var(--lapis);color:#fff;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;border-radius:0 0 12px 12px;}
+.timerbar .clock{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;}
+.timerbar .clock.low{color:#F2C6B8;}
+.passage{line-height:1.65;font-size:15px;}
+.qcard{background:var(--card);border:1px solid var(--line);border-left:5px solid #A8452F;border-radius:10px;padding:15px 17px;margin:10px 0;}
+.qtag{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:#A8452F;padding:2px 8px;border-radius:20px;margin-bottom:7px;}
+.qtext{font-size:15px;margin:0 0 9px;line-height:1.4;}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:6px 4px;border-radius:6px;cursor:pointer;font-size:14px;}
+.opt:hover{background:var(--paper);}
+select{padding:8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);font-size:14px;width:100%;}
+.submitbar{position:sticky;bottom:0;background:var(--paper);padding:14px 0 6px;border-top:1px solid var(--line);margin-top:10px;}
+.scorebig{font-size:46px;font-weight:700;color:var(--lapis);margin:4px 0;}
+@media(prefers-color-scheme:dark){.scorebig{color:var(--gold);}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+.stat .n{font-size:19px;font-weight:700;}.stat .l{font-size:11.5px;color:var(--muted);}
+.sendstat{font-size:13px;margin:10px 0;padding:8px 12px;border-radius:8px;background:#EEF2F6;color:var(--ink);}
+.note{font-size:12px;color:var(--muted);margin-top:14px;line-height:1.5;}
+#qrbox{text-align:center;padding:14px 0;}
 
-<div id="panel">
-  <p class="brand">CULTURE STUDIES 1 · EN16A</p>
-  <h1>Teacher Panel</h1>
-  <p class="sub">Viewing is open to anyone with this link, but nothing can be changed without your access code — it is checked on the server, not in this page, and is never stored here.</p>
-  <div class="card">
-    <label for="code">Access code</label>
-    <input type="password" id="code" autocomplete="off" placeholder="Set as ADMIN_CODE in Apps Script Script Properties">
-    <p class="sub" style="margin:6px 0 0">Entered once here, sent only when you click Save, and checked against the value you set server-side. It is never written into this file.</p>
-  </div>
-  <p class="sub" id="loadStatus">Loading current settings…</p>
-  <div id="rows"></div>
-  <p class="sub" style="margin-top:18px">Each row saves independently — click "Save" after changing a lecture's time or status.</p>
-</div>
-
-</div>
-<script>
-/* No secret lives in this file. The access code is typed in by whoever
-   uses this page and checked server-side in Apps Script against the
-   ADMIN_CODE Script Property — see Code.gs. */
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwEniTg83Uh0wGqlBMz1hBx2N2snCoETxQx26KtiJhSrne0AmZDYDBubeXaw6L5D1KWeg/exec";
-
-const LECTURES = [
-  {code:"L1L2", name:"Lectures 1 & 2 — Prehistory & Mesopotamia"},
-  {code:"L3",   name:"Lecture 3 — The Epic of Gilgamesh"},
-  {code:"L4",   name:"Lecture 4 — Ancient Egypt"},
-  {code:"L5",   name:"Lecture 5 — The Phoenicians"},
-  {code:"L6",   name:"Lecture 6 — The Persian Empire"}
-];
-
-function jsonp(url, attempt){
-  attempt = attempt || 1;
-  return new Promise((resolve,reject)=>{
-    const cbName = "_jsonp_"+Math.random().toString(36).slice(2);
-    const script = document.createElement("script");
-    let done=false;
-    function cleanup(){ delete window[cbName]; script.remove(); }
-    function fail(){
-      cleanup();
-      if(attempt<2) jsonp(url, attempt+1).then(resolve, reject);
-      else reject(new Error("jsonp failed after retry"));
-    }
-    window[cbName] = (data)=>{ done=true; resolve(data); cleanup(); };
-    script.onerror = ()=>{ if(!done) fail(); };
-    const sep = url.indexOf("?")>=0 ? "&" : "?";
-    // _t busts any caching of the identical URL (e.g. repeated manual test links).
-    script.src = url+sep+"callback="+cbName+"&_t="+Date.now();
-    document.body.appendChild(script);
-    setTimeout(()=>{ if(!done) fail(); },9000);
-  });
-}
-async function getSettings(lec, adminCode){
-  const codePart = adminCode ? "&code="+encodeURIComponent(adminCode) : "";
-  return jsonp(SHEET_URL+"?lecture="+lec+codePart);
-}
-async function setSettings(lec, open, duration, password, adminCode){
-  // password === null means "don't touch it" — omit the param entirely so
-  // the server leaves whatever is currently stored unchanged.
-  const pwdPart = (password === null) ? "" : "&password="+encodeURIComponent(password);
-  return jsonp(SHEET_URL+"?lecture="+lec+"&action=set&open="+open+"&duration="+duration+
-    pwdPart+"&code="+encodeURIComponent(adminCode));
-}
-
-function buildRow(lec){
-  const row = document.createElement("div");
-  row.className = "card";
-  row.innerHTML = `
-    <div class="lecrow">
-      <span class="lecname">${lec.name}</span>
-    </div>
-    <div class="controls">
-      <label class="toggle"><input type="checkbox" id="open-${lec.code}"> Open</label>
-      <span class="durfield">Duration:
-        <input type="number" min="5" step="5" id="dur-${lec.code}"> minutes
-      </span>
-    </div>
-    <label for="pwd-${lec.code}" style="margin-top:10px">Set a new quiz password for this session</label>
-    <input type="text" id="pwd-${lec.code}" autocomplete="off" placeholder="Leave blank to keep the current password unchanged">
-    <label class="toggle" style="margin-top:8px"><input type="checkbox" id="clearpwd-${lec.code}"> Remove password protection (anyone with the link can start)</label>
-    <button class="btn" id="save-${lec.code}">Save</button>
-    <p class="status" id="status-${lec.code}">Loading…</p>
-    <p class="status"><a href="${SHEET_URL}?lecture=${lec.code}" target="_blank" rel="noopener">Check this lecture's raw server response directly ↗</a></p>`;
-  return row;
-}
-
-async function loadAll(){
-  const container = document.getElementById("rows");
-  container.innerHTML = "";
-  LECTURES.forEach(lec => container.appendChild(buildRow(lec)));
-  document.getElementById("loadStatus").textContent =
-    "Current settings loaded below. Enter your access code above to save any change, including passwords.";
-
-  for (const lec of LECTURES){
-    const statusEl = document.getElementById("status-"+lec.code);
-    try{
-      const s = await getSettings(lec.code);
-      document.getElementById("open-"+lec.code).checked = s.open;
-      document.getElementById("dur-"+lec.code).value = s.durationMinutes;
-      statusEl.textContent = "Currently: " + (s.open?"open":"closed") + ", " + s.durationMinutes + " minutes, " +
-        (s.hasPassword ? "password required." : "no password required.");
-      statusEl.className = "status";
-    }catch(e){
-      statusEl.textContent = "Could not load current settings — check your internet connection and the SHEET_URL in this file.";
-      statusEl.className = "status err";
-    }
-    document.getElementById("save-"+lec.code).addEventListener("click", ()=>saveRow(lec.code));
-  }
-}
-
-async function saveRow(lec){
-  const statusEl = document.getElementById("status-"+lec);
-  const btn = document.getElementById("save-"+lec);
-  const open = document.getElementById("open-"+lec).checked;
-  const duration = parseInt(document.getElementById("dur-"+lec).value,10) || 60;
-  const pwdField = document.getElementById("pwd-"+lec).value;
-  const clearPwd = document.getElementById("clearpwd-"+lec).checked;
-  // null = don't touch the stored password; "" = explicitly clear it; else = set it.
-  const passwordToSend = clearPwd ? "" : (pwdField ? pwdField : null);
-  const adminCode = document.getElementById("code").value;
-  if(!adminCode){
-    statusEl.textContent = "Enter the access code above first.";
-    statusEl.className = "status err";
-    return;
-  }
-  btn.disabled = true;
-  statusEl.textContent = "Saving…";
-  statusEl.className = "status";
-
-  let unauthorized = false;
-  let sendError = false;
-  try{
-    const s = await setSettings(lec, open, duration, passwordToSend, adminCode);
-    if(s && s.error === "unauthorized") unauthorized = true;
-  }catch(e){
-    sendError = true; // couldn't read the confirmation — doesn't mean it didn't save
-  }
-
-  if(unauthorized){
-    statusEl.textContent = "Incorrect access code — nothing was changed. Check the ADMIN_CODE value in Apps Script Script Properties.";
-    statusEl.className = "status err";
-    btn.disabled = false;
-    return;
-  }
-
-  // The write happens server-side the moment the request arrives, whether
-  // or not this page could read a confirmation back. Re-read the actual
-  // current value rather than trusting the round-trip, and report the truth.
-  try{
-    const check = await getSettings(lec);
-    document.getElementById("open-"+lec).checked = check.open;
-    document.getElementById("dur-"+lec).value = check.durationMinutes;
-    document.getElementById("pwd-"+lec).value = "";
-    document.getElementById("clearpwd-"+lec).checked = false;
-    const openMatches = check.open===open && check.durationMinutes===duration;
-    const pwdNote = check.hasPassword ? "password required." : "no password required.";
-    if(openMatches){
-      statusEl.textContent = "Saved and confirmed — now " + (check.open?"open":"closed") + ", " + check.durationMinutes + " minutes, " + pwdNote;
-      statusEl.className = "status ok";
-    } else if(sendError){
-      statusEl.textContent = "Could not confirm — the Sheet currently shows " + (check.open?"open":"closed") + ", " + check.durationMinutes + " minutes (not what you just entered). Try Save again.";
-      statusEl.className = "status err";
-    } else {
-      statusEl.textContent = "Save did not take effect — the Sheet still shows " + (check.open?"open":"closed") + ", " + check.durationMinutes + " minutes.";
-      statusEl.className = "status err";
-    }
-  }catch(e2){
-    statusEl.textContent = sendError
-      ? "Could not reach the server at all — check your internet connection, or test the link below directly."
-      : "Saved, but could not reload to confirm — check the link below directly.";
-    statusEl.className = "status err";
-  }
-  btn.disabled = false;
-}
-
-loadAll();
-</script>
-</body>
-</html>
+.big{font-size:40px;font-weight:700;letter-spacing:.04em;margin:4px 0;color:var(--lapis);}@media(prefers-color-scheme:dark){.big{color:var(--gold);}}
+.row{display:flex;flex-wrap:wrap;gap:0;}.names span{display:inline-block;margin:3px 8px 3px 0;font-size:14px;}
+</style></head><body><div class="wrap">
+<h1>Teacher control panel</h1>
+<div class="card" id="login"><label for="pin">Teacher PIN</label><input type="password" id="pin"><div class="err" id="lerr"></div><button class="btn" id="go">Sign in</button></div>
+<div id="panel" class="hide">
+<div class="card"><label for="qsel">Quiz</label><select id="qsel"></select><p class="sub" style="margin-top:10px">Student link: <strong id="link"></strong></p></div>
+<div class="card"><p class="sub">Status: <strong id="state"></strong></p><div class="sub">Password for students</div><div class="big" id="pw">-</div>
+<div class="sub">Time remaining</div><div class="big" id="clk">-</div>
+<label for="dur">Duration in minutes (used when you open a session)</label><input type="text" id="dur" value="60">
+<label for="npw">Password (leave empty to generate one)</label><input type="text" id="npw">
+<div class="row"><button class="btn" id="bOpen">Open session</button><button class="btn" id="bStart">Start quiz for everyone</button>
+<button class="btn secondary" id="bExt">Add 5 minutes</button><button class="btn secondary" id="bEnd">End now</button>
+<button class="btn secondary" id="bPwd">New password</button><button class="btn secondary" id="bClose">Close quiz</button></div>
+<p class="note">Steps: 1. Open session. 2. Give the password to the class; students join and wait. 3. Start quiz. The timer begins for everyone at the same moment.</p></div>
+<div class="card"><h2>Students</h2><p class="sub" id="count"></p><div class="names" id="roster"></div></div></div></div>
+<script src="config.js"></script><script>
+const $=id=>document.getElementById(id);let pin=sessionStorage.getItem("pin")||"",data=[],skew=0,filled=false;
+const fmt=s=>Math.floor(s/3600)+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function t(cmd,x){const u=new URL(window.API_URL),p=Object.assign({action:"t",pin,cmd,q:$("qsel").value},x||{});for(const k in p)u.searchParams.set(k,p[k]);return fetch(u).then(r=>r.json());}
+function refresh(){t("list").then(r=>{if(!r.ok){pin="";sessionStorage.removeItem("pin");$("login").classList.remove("hide");$("panel").classList.add("hide");$("lerr").textContent=r.error;return;}
+ $("login").classList.add("hide");$("panel").classList.remove("hide");data=r.quizzes;skew=r.now-Date.now();
+ if(!filled){$("qsel").innerHTML=data.map(d=>`<option value="${d.q}">${d.title}</option>`).join("");filled=true;}draw();}).catch(()=>{$("lerr").textContent="Cannot reach the server.";});}
+function draw(){const d=data.find(x=>x.q===$("qsel").value);if(!d)return;
+ $("state").textContent={closed:"Closed",lobby:"Open, waiting to start",running:"Running",ended:"Ended"}[d.state];$("pw").textContent=d.pwd||"-";
+ $("link").textContent=location.href.replace(/teacher\.html.*$/,"")+"quiz.html?q="+d.q;
+ $("clk").textContent=d.state==="running"?fmt(Math.max(0,Math.round((d.endsAt-(Date.now()+skew))/1000))):(d.state==="lobby"?fmt(d.durationSec):"-");
+ const done=d.done;$("count").textContent=d.joined.length+" joined, "+done.length+" submitted";
+ $("roster").innerHTML=d.joined.map(n=>`<span>${n.replace(/</g,"&lt;")}${done.indexOf(n.toLowerCase())>=0?" (submitted)":""}</span>`).join("");}
+function act(cmd,x,ask){if(ask&&!confirm(ask))return;t(cmd,x).then(r=>{if(!r.ok)alert(r.error);refresh();});}
+$("go").onclick=()=>{pin=$("pin").value;sessionStorage.setItem("pin",pin);$("lerr").textContent="";refresh();};
+$("bOpen").onclick=()=>act("open",{min:$("dur").value,pwd:$("npw").value.trim()},"Open a new session? This clears the list of students for this quiz.");
+$("bStart").onclick=()=>act("start",{},"Start the timer for everyone now?");
+$("bExt").onclick=()=>act("extend",{min:5});$("bEnd").onclick=()=>act("end",{},"End the quiz now? All answers are submitted.");
+$("bPwd").onclick=()=>act("pwd",{pwd:$("npw").value.trim()});$("bClose").onclick=()=>act("close",{},"Close this quiz?");
+$("qsel").onchange=draw;setInterval(()=>{if(pin)refresh();},4000);setInterval(draw,1000);if(pin)refresh();
+</script></body></html>
