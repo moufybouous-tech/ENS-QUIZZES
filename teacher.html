@@ -55,7 +55,7 @@ select{padding:8px;border-radius:6px;border:1px solid var(--line);background:var
 <button class="btn secondary" id="bPwd">New password</button><button class="btn secondary" id="bClose">Close quiz</button></div>
 <p class="note">Steps: 1. Open session. 2. Give the password to the class; students join and wait. 3. Start quiz. The timer begins for everyone at the same moment.</p></div>
 <div class="card"><h2>Students</h2><p class="sub" id="count"></p><div class="names" id="roster"></div></div></div></div>
-<script src="config.js"></script><script>
+<script>window.API_URL = "https://script.google.com/macros/s/AKfycbwEniTg83Uh0wGqlBMz1hBx2N2snCoETxQx26KtiJhSrne0AmZDYDBubeXaw6L5D1KWeg/exec";</script>
 const $=id=>document.getElementById(id);let pin=sessionStorage.getItem("pin")||"",data=[],skew=0,filled=false;
 const fmt=s=>Math.floor(s/3600)+":"+String(Math.floor(s%3600/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
 function t(cmd,x){const u=new URL(window.API_URL),p=Object.assign({action:"t",pin,cmd,q:$("qsel").value},x||{});for(const k in p)u.searchParams.set(k,p[k]);return fetch(u).then(r=>r.json());}
